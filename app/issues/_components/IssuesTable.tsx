@@ -1,8 +1,10 @@
+import IssueStatusBadge from "@/app/global_components/IssueStatusBadge";
 import { prisma } from "@/prisma/client";
 import { Table } from "@radix-ui/themes";
+import Link from "next/link";
 
 const IssuesTable = async () => {
-   const issues = await prisma.issue.findMany();
+   const issues = (await prisma.issue.findMany()).toReversed();
    return (
       <Table.Root variant="surface">
          <Table.Header>
@@ -17,14 +19,21 @@ const IssuesTable = async () => {
             </Table.Row>
          </Table.Header>
          <Table.Body>
-            {issues.map(({ title, status, createdAt }, index) => (
+            {issues.map(({ id, title, status, createdAt }, index) => (
                <Table.Row key={index}>
                   <Table.Cell>
-                     {title}
-                     <span className="block md:hidden">{status}</span>
+                     <Link
+                        href={`/issues/${id}`}
+                        className="cursor-pointer hover:underline font-medium"
+                     >
+                        {title}
+                     </Link>
+                     <span className="block md:hidden">
+                        <IssueStatusBadge status={status} />
+                     </span>
                   </Table.Cell>
                   <Table.Cell className="hidden md:table-cell">
-                     {status}
+                     <IssueStatusBadge status={status} />
                   </Table.Cell>
                   <Table.Cell className="hidden md:table-cell">
                      {createdAt.toDateString()}

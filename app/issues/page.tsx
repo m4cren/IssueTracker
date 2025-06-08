@@ -1,17 +1,11 @@
-import React from "react";
-import { Button } from "@radix-ui/themes";
-import Link from "next/link";
-import { prisma } from "@/prisma/client";
-import IssuesTable from "./components/IssuesTable";
+import IssuesTable from "./_components/IssuesTable";
 
-const IssuesPage = () => {
+import IssueAction from "./_components/IssueAction";
+
+const IssuesPage = async () => {
    return (
       <div className="flex flex-col gap-4">
-         <div>
-            <Button>
-               <Link href="/issues/new">New Issue</Link>
-            </Button>
-         </div>
+         <IssueAction />
          <IssuesTable />
       </div>
    );

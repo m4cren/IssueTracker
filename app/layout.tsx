@@ -1,22 +1,12 @@
-import type { Metadata } from "next";
 import "@radix-ui/themes/styles.css";
-import "./theme-config.css";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "./theme-config.css";
 
-import NavBar from "./NavBar";
 import { Theme } from "@radix-ui/themes";
+import NavBar from "./NavBar";
 
-const geistSans = Geist({
-   variable: "--font-geist-sans",
-   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-   variable: "--font-geist-mono",
-   subsets: ["latin"],
-});
 const spaceGrotesk = localFont({
    variable: "--font-spacegrotesk",
    src: "../public/fonts/SpaceGrotesk-VariableFont_wght.ttf",

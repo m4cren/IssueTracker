@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
       const newIssue = await prisma.issue.create({
          data: {
             title: body.title,
-            decription: body.description,
+            description: body.description,
          },
       });
 
