@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AiFillBug } from "react-icons/ai";
 import classnames from "classnames";
+import { Spinner } from "@radix-ui/themes";
 const NavBar = () => {
    const links = [
       {

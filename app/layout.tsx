@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import "@radix-ui/themes/styles.css";
+import "./theme-config.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+
 import NavBar from "./NavBar";
+import { Theme } from "@radix-ui/themes";
 
 const geistSans = Geist({
    variable: "--font-geist-sans",
@@ -14,6 +18,7 @@ const geistMono = Geist_Mono({
    subsets: ["latin"],
 });
 const spaceGrotesk = localFont({
+   variable: "--font-spacegrotesk",
    src: "../public/fonts/SpaceGrotesk-VariableFont_wght.ttf",
 });
 export const metadata: Metadata = {
@@ -28,9 +33,11 @@ export default function RootLayout({
 }>) {
    return (
       <html lang="en">
-         <body className={`${spaceGrotesk.className}  antialiased`}>
-            <NavBar />
-            <main>{children}</main>
+         <body className={`${spaceGrotesk.variable}  antialiased`}>
+            <Theme>
+               <NavBar />
+               <main className="p-8">{children}</main>
+            </Theme>
          </body>
       </html>
    );
