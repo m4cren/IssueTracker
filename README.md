@@ -3,8 +3,8 @@ Self-Project for CodeWithMosh NextJS Course
 -- 07/06/2025 --
 
 ## Technology Stack
- **Frontend**: NextJs, Typescript, TailwindCSS, Radix UI
- **Backend**: Prisma, NextAuthJS
+ **Frontend**: NextJs, Typescript, TailwindCSS, Radix UI </br>
+ **Backend**: Prisma, NextAuthJS, Zod
 
  
 
