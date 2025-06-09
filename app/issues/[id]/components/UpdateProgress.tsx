@@ -2,7 +2,6 @@
 import { Status } from "@/app/generated/prisma";
 import { Button, Text } from "@radix-ui/themes";
 import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const UpdateProgress = ({ id, status }: { id: number; status: Status }) => {

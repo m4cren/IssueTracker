@@ -2,16 +2,13 @@ import { Status } from "@/app/generated/prisma";
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(
-   request: NextRequest,
-   { params: { id } }: { params: { id: string } },
-) {
+export async function PATCH(request: NextRequest, context: any) {
    const body: { currentState: Status } = await request.json();
 
    try {
       await prisma.issue.update({
          where: {
-            id: parseInt(id),
+            id: parseInt(context.params.id),
          },
          data: {
             status:

@@ -6,16 +6,15 @@ import { IssueFormTypes } from "@/app/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
-import dynamic from "next/dynamic";
+
+import SimpleMDE from "react-simplemde-editor";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineAlert } from "react-icons/ai";
 import ErrorMsg from "../../global_components/ErrorMsg";
 import { Issue } from "@/app/generated/prisma";
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-   ssr: false,
-});
+
 const IssueForm = ({ issue }: { issue?: Issue }) => {
    const router = useRouter();
    const {
@@ -38,7 +37,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
             await axios.patch(`/api/${issue.id}/edit-issue`, data);
          }
          router.push("/issues");
-      } catch (error) {
+      } catch {
          setErrorMsg("An unexpected error occured");
       } finally {
          setIsLoading(false);
@@ -46,7 +45,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
    };
 
    return (
-      <div className="flex flex-col gap-2 w-[50vw]">
+      <div className="flex flex-col gap-2 w-full md:w-[50vw]">
          {errorMsg && (
             <Callout.Root color="red">
                <Callout.Icon>

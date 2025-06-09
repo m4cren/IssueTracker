@@ -3,10 +3,7 @@ import { IssueSchema } from "@/app/lib/rules";
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(
-   request: NextRequest,
-   { params }: { params: { id: string } },
-) {
+export async function PATCH(request: NextRequest, context: any) {
    const issueToUpdate: Issue = await request.json();
 
    const validIssue = IssueSchema.safeParse(issueToUpdate);
@@ -17,7 +14,7 @@ export async function PATCH(
    try {
       await prisma.issue.update({
          where: {
-            id: parseInt(params.id),
+            id: parseInt(context.params.id),
          },
          data: {
             title: issueToUpdate.title,
