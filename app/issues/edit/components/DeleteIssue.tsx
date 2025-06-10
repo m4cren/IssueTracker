@@ -12,7 +12,7 @@ const DeleteIssue = ({ id }: { id: number }) => {
    const handleDelete = async () => {
       setIsLoading(true);
       try {
-         await axios.delete(`/api/${id}/delete-issue`);
+         await axios.delete(`/api/delete-issue/${id}`);
          route.push("/issues/list");
          route.refresh();
       } catch (error) {

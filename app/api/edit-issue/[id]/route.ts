@@ -1,5 +1,5 @@
 import { Issue } from "@/app/generated/prisma";
-import { IssueSchema } from "@/app/lib/rules";
+import { PatchIssueSchema } from "@/app/lib/rules";
 import { prisma } from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -12,10 +12,26 @@ export async function PATCH(request: NextRequest, context: any) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
    const issueToUpdate: Issue = await request.json();
 
-   const validIssue = IssueSchema.safeParse(issueToUpdate);
+   const validIssue = PatchIssueSchema.safeParse(issueToUpdate);
 
    if (!validIssue.success)
       return NextResponse.json(validIssue.error.errors, { status: 400 });
+
+   const { assignToUserId, title, description } = issueToUpdate;
+
+   if (assignToUserId) {
+      const user = await prisma.user.findUnique({
+         where: {
+            id: assignToUserId,
+         },
+      });
+
+      if (!user)
+         return NextResponse.json(
+            { message: "User not found" },
+            { status: 400 },
+         );
+   }
 
    try {
       await prisma.issue.update({
@@ -23,8 +39,9 @@ export async function PATCH(request: NextRequest, context: any) {
             id: parseInt(context.params.id),
          },
          data: {
-            title: issueToUpdate.title,
-            description: issueToUpdate.description,
+            title,
+            description,
+            assignToUserId,
          },
       });
       return NextResponse.json(

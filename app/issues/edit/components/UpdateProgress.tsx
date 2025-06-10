@@ -11,7 +11,7 @@ const UpdateProgress = ({ id, status }: { id: number; status: Status }) => {
    const handleUpdateStatus = async () => {
       setIsLoading(true);
       try {
-         await axios.patch(`/api/${id}/update-issue-status`, {
+         await axios.patch(`/api/update-issue-status/${id}`, {
             currentState: status,
          });
       } catch (error) {
