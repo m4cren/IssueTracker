@@ -8,6 +8,7 @@ import { Theme } from "@radix-ui/themes";
 import NavBar from "./NavBar";
 import { SessionProvider } from "next-auth/react";
 import AuthProvider from "./auth/Provider";
+import QueryClientProvider from "./QueryClientProvider";
 
 const spaceGrotesk = localFont({
    variable: "--font-spacegrotesk",
@@ -25,14 +26,16 @@ export default function RootLayout({
 }>) {
    return (
       <html lang="en">
-         <AuthProvider>
-            <body className={`${spaceGrotesk.variable}  antialiased`}>
-               <Theme>
-                  <NavBar />
-                  <main className="p-8">{children}</main>
-               </Theme>
-            </body>
-         </AuthProvider>
+         <QueryClientProvider>
+            <AuthProvider>
+               <body className={`${spaceGrotesk.variable}  antialiased`}>
+                  <Theme>
+                     <NavBar />
+                     <main className="p-8">{children}</main>
+                  </Theme>
+               </body>
+            </AuthProvider>
+         </QueryClientProvider>
       </html>
    );
 }
