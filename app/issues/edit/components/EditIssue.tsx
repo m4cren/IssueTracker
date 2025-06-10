@@ -8,7 +8,7 @@ const EditIssue = ({ id }: { id: number }) => {
       <Button>
          <Pencil2Icon />
          <Link
-            href={`/issues/${id}/edit`}
+            href={`/issues/${id}`}
             className="flex flex-row gap-2 items-center"
          >
             Edit Issue

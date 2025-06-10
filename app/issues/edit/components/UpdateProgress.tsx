@@ -1,12 +1,15 @@
 "use client";
 import { Status } from "@/app/generated/prisma";
-import { Button, Text } from "@radix-ui/themes";
+import { Button, Spinner, Text } from "@radix-ui/themes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const UpdateProgress = ({ id, status }: { id: number; status: Status }) => {
    const router = useRouter();
+   const [isLoading, setIsLoading] = useState<boolean>(false);
    const handleUpdateStatus = async () => {
+      setIsLoading(true);
       try {
          await axios.patch(`/api/${id}/update-issue-status`, {
             currentState: status,
@@ -14,7 +17,8 @@ const UpdateProgress = ({ id, status }: { id: number; status: Status }) => {
       } catch (error) {
          console.log(error);
       } finally {
-         router.push("/issues");
+         router.push("/issues/list");
+         setIsLoading(false);
       }
    };
    return (
@@ -27,15 +31,19 @@ const UpdateProgress = ({ id, status }: { id: number; status: Status }) => {
                  ? "classic"
                  : "soft"
          }
-         disabled={status === "CLOSED"}
+         disabled={status === "CLOSED" || isLoading}
       >
-         <Text className="flex flex-row gap-2 items-center">
-            {status === "OPEN"
-               ? "Mark as In Progress"
-               : status === "IN_PROGRESS"
-                 ? "Close the Issue"
-                 : "Completed"}
-         </Text>
+         {isLoading ? (
+            <Spinner />
+         ) : (
+            <Text className="flex flex-row gap-2 items-center">
+               {status === "OPEN"
+                  ? "Mark as In Progress"
+                  : status === "IN_PROGRESS"
+                    ? "Close the Issue"
+                    : "Completed"}
+            </Text>
+         )}
       </Button>
    );
 };

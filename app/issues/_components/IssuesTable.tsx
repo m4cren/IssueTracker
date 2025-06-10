@@ -23,7 +23,7 @@ const IssuesTable = async () => {
                <Table.Row key={index}>
                   <Table.Cell>
                      <Link
-                        href={`/issues/${id}`}
+                        href={`/issues/edit/${id}`}
                         className="cursor-pointer hover:underline font-medium"
                      >
                         {title}

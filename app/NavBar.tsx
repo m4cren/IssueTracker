@@ -10,7 +10,7 @@ const NavBar = () => {
          lbl: "Dashboard",
       },
       {
-         href: "/issues",
+         href: "/issues/list",
          lbl: "Issues",
       },
    ];

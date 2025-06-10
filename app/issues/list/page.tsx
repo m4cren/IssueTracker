@@ -1,6 +1,6 @@
-import IssuesTable from "./_components/IssuesTable";
+import IssuesTable from "@/app/issues/_components/IssuesTable";
 
-import IssueAction from "./_components/IssueAction";
+import IssueAction from "@/app/issues/_components/IssueAction";
 
 const IssuesPage = async () => {
    return (
