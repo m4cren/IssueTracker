@@ -1,26 +1,27 @@
 "use client";
 import { User } from "@/app/generated/prisma";
-import { Select } from "@radix-ui/themes";
+import { Select, Spinner } from "@radix-ui/themes";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const AssigneeSelector = () => {
-   const [users, setUsers] = useState<User[] | null>(null);
-   const fetchUsers = async () => {
-      try {
-         const { data } = await axios.get<User[]>("/api/users");
-         if (data) {
-            setUsers(data);
-         }
-      } catch (error) {
-         console.log(error);
-      }
-   };
+   const {
+      data: users,
+      error,
+      isLoading,
+   } = useQuery<User[]>({
+      queryKey: ["users"],
+      queryFn: () => axios.get("/api/users").then((res) => res.data),
+      staleTime: 60 * 1000,
+      retry: 3,
+   });
 
-   useEffect(() => {
-      fetchUsers();
-   }, []);
+   if (error) return null;
+
+   if (isLoading) return <Spinner size={"2"} />;
+
    return (
       <Select.Root>
          <Select.Trigger placeholder="Assign..." />
