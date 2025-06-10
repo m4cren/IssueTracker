@@ -6,6 +6,7 @@ import IssueDetails from "../components/IssueDetails";
 import { FC } from "react";
 import UpdateProgress from "../components/UpdateProgress";
 import DeleteIssue from "../components/DeleteIssue";
+import AssigneeSelector from "../../_components/AssigneeSelector";
 
 const page: FC<{ params: { id: string } }> = async (props) => {
    const issue = await prisma.issue.findUnique({
@@ -24,6 +25,7 @@ const page: FC<{ params: { id: string } }> = async (props) => {
             </Box>
             <Box>
                <Flex direction={"column"} gap={"2"}>
+                  <AssigneeSelector />
                   <EditIssue id={issue.id} />
                   <DeleteIssue id={issue.id} />
                   <UpdateProgress id={issue.id} status={issue.status} />
