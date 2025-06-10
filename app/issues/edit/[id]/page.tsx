@@ -25,7 +25,7 @@ const page: FC<{ params: { id: string } }> = async (props) => {
             </Box>
             <Box>
                <Flex direction={"column"} gap={"2"}>
-                  <AssigneeSelector />
+                  <AssigneeSelector issue={issue} />
                   <EditIssue id={issue.id} />
                   <DeleteIssue id={issue.id} />
                   <UpdateProgress id={issue.id} status={issue.status} />
