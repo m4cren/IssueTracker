@@ -1,9 +1,15 @@
 import { prisma } from "@/prisma/client";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import authOptions from "../../auth/[...nextauth]/authOptions";
 export async function DELETE(
    request: NextRequest,
    { params: { id } }: { params: { id: string } },
 ): Promise<NextResponse> {
+   const session = await getServerSession(authOptions);
+
+   if (!session)
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
    const issueToDelete = await prisma.issue.findUnique({
       where: {
          id: parseInt(id),

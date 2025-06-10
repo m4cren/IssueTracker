@@ -1,7 +1,7 @@
-import React, { FC } from "react";
 import IssueForm from "@/app/issues/_components/IssueForm";
 import { prisma } from "@/prisma/client";
 import { notFound } from "next/navigation";
+import { FC } from "react";
 
 const EditIssueForm: FC<{ params: { id: string } }> = async (props) => {
    const issue = await prisma.issue.findUnique({
