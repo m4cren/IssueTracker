@@ -1,7 +1,7 @@
 "use client";
 import { FilterTypes } from "@/app/lib/types";
 import { Select } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 const status: FilterTypes[] = [
@@ -13,10 +13,18 @@ const status: FilterTypes[] = [
 
 const IssueFilter = () => {
    const route = useRouter();
+   const searchParams = useSearchParams();
    return (
       <Select.Root
+         defaultValue={searchParams.get("filterStatus") || ""}
          onValueChange={(value) => {
-            const query = value ? `?filterStatus=${value}` : "";
+            const params = new URLSearchParams();
+
+            if (value) params.append("filterStatus", value);
+            if (searchParams.get("orderBy")) {
+               params.append("orderBy", searchParams.get("orderBy")!);
+            }
+            const query = params.size ? "?" + params.toString() : "";
             route.push(`/issues/list${query}`);
          }}
       >

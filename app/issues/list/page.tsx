@@ -1,12 +1,12 @@
 import IssuesTable from "@/app/issues/_components/IssuesTable";
 
 import IssueAction from "@/app/issues/_components/IssueAction";
-import { Status } from "@/app/generated/prisma";
+import { Issue, Status } from "@/app/generated/prisma";
 
 const IssuesPage = async ({
    searchParams,
 }: {
-   searchParams: { filterStatus: Status };
+   searchParams: { filterStatus: Status; orderBy: keyof Issue };
 }) => {
    console.log(searchParams.filterStatus);
    return (

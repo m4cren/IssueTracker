@@ -36,7 +36,7 @@ const IssuesTable = async ({
 
    const queryObject = {
       filterStatus: searchParams.filterStatus,
-      orderBy,
+      orderBy: searchParams.orderBy,
    };
 
    const filteredIssues =
