@@ -1,21 +1,24 @@
 import { prisma } from "@/prisma/client";
 import { Box, Flex, Grid } from "@radix-ui/themes";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { cache, FC } from "react";
+import AssigneeSelector from "../../_components/AssigneeSelector";
+import DeleteIssue from "../components/DeleteIssue";
 import EditIssue from "../components/EditIssue";
 import IssueDetails from "../components/IssueDetails";
-import { FC } from "react";
 import UpdateProgress from "../components/UpdateProgress";
-import DeleteIssue from "../components/DeleteIssue";
-import AssigneeSelector from "../../_components/AssigneeSelector";
-import { SearchParamsTypes } from "@/app/lib/types";
-import { Metadata } from "next";
 
-const page: FC<{ params: { id: string } }> = async (props) => {
-   const issue = await prisma.issue.findUnique({
+const fetchUser = cache((issueId: number) => {
+   return prisma.issue.findUnique({
       where: {
-         id: parseInt(props.params.id),
+         id: issueId,
       },
    });
+});
+
+const page: FC<{ params: { id: string } }> = async (props) => {
+   const issue = await fetchUser(parseInt(props.params.id));
 
    if (!issue) {
       notFound();
@@ -42,11 +45,7 @@ export async function generateMetadata({
 }: {
    params: { id: string };
 }): Promise<Metadata> {
-   const issue = await prisma.issue.findUnique({
-      where: {
-         id: parseInt(params.id),
-      },
-   });
+   const issue = await fetchUser(parseInt(params.id));
 
    return {
       title: issue?.title,
