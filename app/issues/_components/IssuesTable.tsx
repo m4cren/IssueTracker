@@ -1,37 +1,23 @@
-import { Issue, Status } from "@/app/generated/prisma";
+import { Issue } from "@/app/generated/prisma";
 import IssueStatusBadge from "@/app/global_components/IssueStatusBadge";
 import Pagination from "@/app/global_components/Pagination";
+import { PAGE_SIZE } from "@/app/lib/constants";
+import { SearchParamsTypes } from "@/app/lib/types";
 import { prisma } from "@/prisma/client";
 import { ArrowDownIcon } from "@radix-ui/react-icons";
 import { Table } from "@radix-ui/themes";
 import Link from "next/link";
 
-const tableHeader: { label: string; value: keyof Issue; className?: string }[] =
-   [
-      { label: "Issue", value: "title" },
-      { label: "Status", value: "status", className: "hidden md:table-cell" },
-      {
-         label: "Created At",
-         value: "createdAt",
-         className: "hidden md:table-cell",
-      },
-   ];
-
 const IssuesTable = async ({
    searchParams,
 }: {
-   searchParams: {
-      filterStatus: Status | "All";
-      orderBy: keyof Issue;
-      page: string;
-   };
+   searchParams: SearchParamsTypes;
 }) => {
    const queryObject = {
       filterStatus: searchParams.filterStatus,
       orderBy: searchParams.orderBy,
       page: parseInt(searchParams.page) || 1,
    };
-   const pageSize = 10;
 
    const filterer =
       queryObject.filterStatus === "All"
@@ -52,8 +38,8 @@ const IssuesTable = async ({
       await prisma.issue.findMany({
          where,
          orderBy,
-         skip: (queryObject.page - 1) * pageSize,
-         take: pageSize,
+         skip: (queryObject.page - 1) * PAGE_SIZE,
+         take: PAGE_SIZE,
       })
    ).toReversed();
 
@@ -112,10 +98,21 @@ const IssuesTable = async ({
          <Pagination
             currentPage={queryObject.page}
             itemCount={itemCount}
-            pageSize={pageSize}
+            pageSize={PAGE_SIZE}
          />
       </>
    );
 };
+
+const tableHeader: { label: string; value: keyof Issue; className?: string }[] =
+   [
+      { label: "Issue", value: "title" },
+      { label: "Status", value: "status", className: "hidden md:table-cell" },
+      {
+         label: "Created At",
+         value: "createdAt",
+         className: "hidden md:table-cell",
+      },
+   ];
 
 export default IssuesTable;

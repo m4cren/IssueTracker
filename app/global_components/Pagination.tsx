@@ -25,10 +25,7 @@ const Pagination = ({ currentPage, itemCount, pageSize }: PaginationType) => {
       router.push("?" + params.toString());
    };
    return (
-      <Flex align={"center"} gap={"2"}>
-         <Text size={"1"}>
-            Page {currentPage} of {pageCount}
-         </Text>
+      <Flex align={"center"} gap={"2"} justify={"center"} mt={"2"}>
          <Button
             color="gray"
             variant="soft"
@@ -45,6 +42,9 @@ const Pagination = ({ currentPage, itemCount, pageSize }: PaginationType) => {
          >
             <ChevronLeftIcon />
          </Button>
+         <Text size={"1"}>
+            Page {currentPage} of {pageCount}
+         </Text>
          <Button
             color="gray"
             variant="soft"

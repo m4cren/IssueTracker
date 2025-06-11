@@ -1,12 +1,12 @@
 import IssuesTable from "@/app/issues/_components/IssuesTable";
 
 import IssueAction from "@/app/issues/_components/IssueAction";
-import { Issue, Status } from "@/app/generated/prisma";
+import { SearchParamsTypes } from "@/app/lib/types";
 
 const IssuesPage = async ({
    searchParams,
 }: {
-   searchParams: { filterStatus: Status; orderBy: keyof Issue; page: string };
+   searchParams: SearchParamsTypes;
 }) => {
    return (
       <div className="flex flex-col gap-4 ">
