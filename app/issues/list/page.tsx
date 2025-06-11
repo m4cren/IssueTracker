@@ -2,6 +2,7 @@ import IssuesTable from "@/app/issues/_components/IssuesTable";
 
 import IssueAction from "@/app/issues/_components/IssueAction";
 import { SearchParamsTypes } from "@/app/lib/types";
+import { Metadata } from "next";
 
 const IssuesPage = async ({
    searchParams,
@@ -16,5 +17,8 @@ const IssuesPage = async ({
    );
 };
 export const dynamic = "force-dynamic";
-
+export const metadata: Metadata = {
+   title: "Issue Tracker | Issues list",
+   description: "View all project issues",
+};
 export default IssuesPage;

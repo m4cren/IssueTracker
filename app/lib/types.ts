@@ -9,3 +9,8 @@ export type SearchParamsTypes = {
    orderBy: keyof Issue;
    page: string;
 };
+export type DashboardDataTypes = {
+   open: number;
+   inProgress: number;
+   closed: number;
+};

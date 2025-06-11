@@ -7,6 +7,8 @@ import { FC } from "react";
 import UpdateProgress from "../components/UpdateProgress";
 import DeleteIssue from "../components/DeleteIssue";
 import AssigneeSelector from "../../_components/AssigneeSelector";
+import { SearchParamsTypes } from "@/app/lib/types";
+import { Metadata } from "next";
 
 const page: FC<{ params: { id: string } }> = async (props) => {
    const issue = await prisma.issue.findUnique({
@@ -35,5 +37,20 @@ const page: FC<{ params: { id: string } }> = async (props) => {
       );
    }
 };
+export async function generateMetadata({
+   params,
+}: {
+   params: { id: string };
+}): Promise<Metadata> {
+   const issue = await prisma.issue.findUnique({
+      where: {
+         id: parseInt(params.id),
+      },
+   });
 
+   return {
+      title: issue?.title,
+      description: issue?.description,
+   };
+}
 export default page;

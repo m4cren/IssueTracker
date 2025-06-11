@@ -3,6 +3,7 @@ import { Issue, User } from "@/app/generated/prisma";
 import { Select, Spinner } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 const AssigneeSelector = ({ issue }: { issue: Issue }) => {
    const { data: users, error, isLoading } = useUsers();
@@ -12,6 +13,7 @@ const AssigneeSelector = ({ issue }: { issue: Issue }) => {
    if (isLoading) return <Spinner size={"2"} />;
 
    const handleChange = async (userId: string) => {
+      toast("Processing please wait...");
       try {
          await axios.patch(`/api/edit-issue/${issue.id}`, {
             assignToUserId: userId === "unassigned" ? null : userId || null,
@@ -30,7 +32,7 @@ const AssigneeSelector = ({ issue }: { issue: Issue }) => {
             defaultValue={issue.assignToUserId || ""}
             onValueChange={(userId) => handleChange(userId)}
          >
-            <Select.Trigger placeholder="Assign..." />
+            <Select.Trigger placeholder={"Assign"} />
             <Select.Content>
                <Select.Group>
                   <Select.Label>Suggestions</Select.Label>
