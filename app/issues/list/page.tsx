@@ -6,9 +6,8 @@ import { Issue, Status } from "@/app/generated/prisma";
 const IssuesPage = async ({
    searchParams,
 }: {
-   searchParams: { filterStatus: Status; orderBy: keyof Issue };
+   searchParams: { filterStatus: Status; orderBy: keyof Issue; page: string };
 }) => {
-   console.log(searchParams.filterStatus);
    return (
       <div className="flex flex-col gap-4 ">
          <IssueAction />
