@@ -1,14 +1,21 @@
 import IssuesTable from "@/app/issues/_components/IssuesTable";
 
 import IssueAction from "@/app/issues/_components/IssueAction";
+import { Status } from "@/app/generated/prisma";
 
-const IssuesPage = async () => {
+const IssuesPage = async ({
+   searchParams,
+}: {
+   searchParams: { filterStatus: Status };
+}) => {
+   console.log(searchParams.filterStatus);
    return (
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 ">
          <IssueAction />
-         <IssuesTable />
+         <IssuesTable searchParams={searchParams} />
       </div>
    );
 };
+export const dynamic = "force-dynamic";
 
 export default IssuesPage;

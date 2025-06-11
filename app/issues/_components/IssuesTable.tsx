@@ -1,25 +1,75 @@
+import { Issue, Status } from "@/app/generated/prisma";
 import IssueStatusBadge from "@/app/global_components/IssueStatusBadge";
 import { prisma } from "@/prisma/client";
+import { ArrowDownIcon } from "@radix-ui/react-icons";
 import { Table } from "@radix-ui/themes";
 import Link from "next/link";
 
-const IssuesTable = async () => {
-   const issues = (await prisma.issue.findMany()).toReversed();
+const tableHeader: { label: string; value: keyof Issue; className?: string }[] =
+   [
+      { label: "Issue", value: "title" },
+      { label: "Status", value: "status", className: "hidden md:table-cell" },
+      {
+         label: "Created At",
+         value: "createdAt",
+         className: "hidden md:table-cell",
+      },
+   ];
+
+const IssuesTable = async ({
+   searchParams,
+}: {
+   searchParams: { filterStatus: Status | "All"; orderBy: keyof Issue };
+}) => {
+   const issues = (
+      await prisma.issue.findMany({
+         orderBy: {
+            [searchParams.orderBy]: "asc",
+         },
+      })
+   ).toReversed();
+   const orderBy = tableHeader
+      .map(({ value }) => value)
+      .includes(searchParams.orderBy)
+      ? { [searchParams.orderBy]: "asc" }
+      : undefined;
+
+   const queryObject = {
+      filterStatus: searchParams.filterStatus,
+      orderBy,
+   };
+
+   const filteredIssues =
+      searchParams.filterStatus === "All"
+         ? issues
+         : searchParams.filterStatus
+           ? issues.filter(({ status }) => status === searchParams.filterStatus)
+           : issues;
    return (
       <Table.Root variant="surface">
          <Table.Header>
             <Table.Row>
-               <Table.ColumnHeaderCell>Issue</Table.ColumnHeaderCell>
-               <Table.ColumnHeaderCell className="hidden md:table-cell">
-                  Status
-               </Table.ColumnHeaderCell>
-               <Table.ColumnHeaderCell className="hidden md:table-cell">
-                  Created At
-               </Table.ColumnHeaderCell>
+               {tableHeader.map(({ label, value, className }) => (
+                  <Table.ColumnHeaderCell key={value} className={className}>
+                     <Link
+                        href={{
+                           query: {
+                              ...queryObject,
+                              orderBy: value,
+                           },
+                        }}
+                     >
+                        {label}
+                     </Link>
+                     {value === queryObject.orderBy && (
+                        <ArrowDownIcon className="inline" />
+                     )}
+                  </Table.ColumnHeaderCell>
+               ))}
             </Table.Row>
          </Table.Header>
          <Table.Body>
-            {issues.map(({ id, title, status, createdAt }, index) => (
+            {filteredIssues.map(({ id, title, status, createdAt }, index) => (
                <Table.Row key={index}>
                   <Table.Cell>
                      <Link
